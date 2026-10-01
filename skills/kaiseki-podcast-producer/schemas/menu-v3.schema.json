@@ -1,0 +1,642 @@
+{
+  "type": "object",
+  "required": [
+    "menu_id",
+    "rulesVersion",
+    "title",
+    "description",
+    "coreImagery",
+    "centralThesis",
+    "emotionalCurve",
+    "coverColors",
+    "chapters",
+    "createdAt",
+    "mastering",
+    "musicPool",
+    "factPool",
+    "timeline"
+  ],
+  "properties": {
+    "menu_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*-v[1-9][0-9]*$"
+    },
+    "rulesVersion": {
+      "const": "sound-rules-v3"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "tags": {
+      "type": ["array", "object"],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "maxItems": 9,
+      "required": ["genre", "theme", "mood"],
+      "properties": {
+        "genre": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "theme": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "mood": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "scene": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "maxItems": 2
+        }
+      }
+    },
+    "artists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "role"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1, "maxLength": 40 },
+          "role": { "enum": ["main", "mentioned"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "related_entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "role"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1, "maxLength": 40 },
+          "role": { "enum": ["main", "mentioned"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "tag_evidence": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "integer", "minimum": 1 },
+        "minItems": 1
+      }
+    },
+    "coreImagery": {
+      "type": "string",
+      "minLength": 1
+    },
+    "centralThesis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "emotionalCurve": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "coverColors": {
+      "type": "object",
+      "required": [
+        "colors"
+      ],
+      "properties": {
+        "colors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "h",
+              "s",
+              "b"
+            ],
+            "properties": {
+              "h": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 360
+              },
+              "s": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "b": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 80
+              }
+            },
+            "additionalProperties": false
+          },
+          "minItems": 4,
+          "maxItems": 4
+        }
+      },
+      "additionalProperties": false
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "keyword",
+          "blocks",
+          "summary"
+        ],
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blocks": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 2,
+      "maxItems": 3
+    },
+    "createdAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mastering": {
+      "type": "object",
+      "required": [
+        "duckDb"
+      ],
+      "properties": {
+        "duckDb": {
+          "type": "number",
+          "maximum": 0
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "musicPool": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/song"
+      },
+      "minItems": 1
+    },
+    "factPool": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fact"
+      },
+      "minItems": 1
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "blockId",
+          "type",
+          "narrativeFunction",
+          "emotionalTarget",
+          "density",
+          "contentDirections",
+          "items"
+        ],
+        "properties": {
+          "blockId": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^B[1-9][0-9]*$"
+          },
+          "type": {
+            "enum": [
+              "hook",
+              "narrative",
+              "transition",
+              "climax",
+              "ending",
+              "listening"
+            ]
+          },
+          "narrativeFunction": {
+            "type": "string",
+            "minLength": 1
+          },
+          "emotionalTarget": {
+            "type": "string",
+            "minLength": 1
+          },
+          "density": {
+            "enum": [
+              "sparse",
+              "dense"
+            ]
+          },
+          "contentDirections": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "itemId",
+                "kind",
+                "start"
+              ],
+              "properties": {
+                "itemId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "enum": [
+                    "music",
+                    "voice"
+                  ]
+                },
+                "start": {
+                  "type": "object",
+                  "required": [
+                    "anchor",
+                    "offsetSeconds"
+                  ],
+                  "properties": {
+                    "anchor": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "offsetSeconds": {
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "songId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "^S[0-9]+$"
+                },
+                "mode": {
+                  "const": "full"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "factRefs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^F[0-9]{2,}$"
+                  },
+                  "minItems": 0,
+                  "uniqueItems": true
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "endConstraint": {
+                  "type": "object",
+                  "required": [
+                    "before",
+                    "marginSeconds",
+                    "onViolation"
+                  ],
+                  "properties": {
+                    "before": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "^P[0-9]+\\.vocalStart$"
+                    },
+                    "marginSeconds": {
+                      "type": "number",
+                      "minimum": 2
+                    },
+                    "onViolation": {
+                      "const": "error"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "minItems": 1
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 2
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "final"
+      ]
+    },
+    "fallbackPlan": {
+      "type": "string"
+    },
+    "fullScriptText": {
+      "type": "string"
+    },
+    "producer_model": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "producer_harness": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    }
+  },
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kaiseki.radio/schemas/menu-v3.json",
+  "$defs": {
+    "song": {
+      "type": "object",
+      "required": [
+        "songId",
+        "title",
+        "artist"
+      ],
+      "properties": {
+        "songId": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^S[0-9]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artist": {
+          "type": "string",
+          "minLength": 1
+        },
+        "why": {
+          "type": "string"
+        },
+        "album": {
+          "type": "string"
+        },
+        "releaseYear": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "durationSeconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "durationSource": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recordingId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceUrls": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0
+        },
+        "platformLinks": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "apple": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "netease": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "qq": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "youtube": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "spotify": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "missingPlatformReasons": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "apple": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "netease": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "qq": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "youtube": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "spotify": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "lyrics": {
+          "type": "string"
+        },
+        "lyricsFile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lyricsSource": {
+          "type": "object",
+          "required": [
+            "url"
+          ],
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sourceId": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "playback": {
+          "type": "object",
+          "required": [
+            "provider",
+            "providerTrackId"
+          ],
+          "properties": {
+            "provider": {
+              "enum": [
+                "netease",
+                "youtube",
+                "fixture"
+              ]
+            },
+            "providerTrackId": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "vocalStartEstimateSeconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "timingNotes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "fact": {
+      "type": "object",
+      "required": [
+        "id",
+        "text",
+        "type",
+        "confidence",
+        "sourceUrls"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^F[0-9]{2,}$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "事实",
+            "引语",
+            "数据"
+          ]
+        },
+        "confidence": {
+          "enum": [
+            "双源确认",
+            "单源可信",
+            "孤证存疑",
+            "传闻"
+          ]
+        },
+        "sourceUrls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "note": {
+          "type": "string"
+        },
+        "conflicted": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

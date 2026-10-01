@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  producer-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check version metadata
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          skill = Path('skills/kaiseki-podcast-producer')
+          version = (skill / 'VERSION').read_text(encoding='utf-8').strip()
+          assert re.fullmatch(r'\d+\.\d+\.\d+', version), f'invalid VERSION: {version!r}'
+          source = (skill / 'SKILL.md').read_text(encoding='utf-8')
+          assert f'version: {version}' in source, 'SKILL.md version metadata does not match VERSION'
+          PY
+      - name: Producer self-test
+        run: python3 skills/kaiseki-podcast-producer/scripts/self_test.py

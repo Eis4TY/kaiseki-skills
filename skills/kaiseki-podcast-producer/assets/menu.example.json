@@ -1,0 +1,293 @@
+{
+  "menu_id": "contract-example-v1",
+  "rulesVersion": "sound-rules-v3",
+  "title": "契约自检样例（不可作为真实节目）",
+  "description": "全部为合成数据，仅验证字段和相对时序；URL 未经在线核验。",
+  "tags": {
+    "genre": ["实验音乐"],
+    "theme": ["技术工艺"],
+    "mood": ["平静", "释然"],
+    "scene": []
+  },
+  "artists": [
+    { "name": "测试作者", "role": "main" }
+  ],
+  "related_entities": [],
+  "tag_evidence": {
+    "实验音乐": [1, 2, 3],
+    "技术工艺": [1, 2],
+    "平静": [3],
+    "释然": [3]
+  },
+  "coreImagery": "测试信号",
+  "centralThesis": "一份明确的总谱能被不同执行端一致读取。",
+  "emotionalCurve": [
+    "好奇",
+    "思考",
+    "释然"
+  ],
+  "coverColors": {
+    "colors": [
+      {
+        "h": 0,
+        "s": 0,
+        "b": 0
+      },
+      {
+        "h": 0,
+        "s": 0,
+        "b": 0
+      },
+      {
+        "h": 0,
+        "s": 0,
+        "b": 0
+      },
+      {
+        "h": 0,
+        "s": 0,
+        "b": 0
+      }
+    ]
+  },
+  "chapters": [
+    {
+      "keyword": "开始",
+      "blocks": "B1-B2",
+      "summary": "构造与展开"
+    },
+    {
+      "keyword": "回声",
+      "blocks": "B3",
+      "summary": "收尾"
+    }
+  ],
+  "createdAt": "2026-09-16",
+  "mastering": {
+    "duckDb": -22
+  },
+  "musicPool": [
+    {
+      "songId": "S01",
+      "title": "合成测试歌曲1",
+      "artist": "测试作者",
+      "durationSeconds": 61,
+      "durationSource": "https://musicbrainz.org/recording/00000000-0000-0000-0000-000000000000",
+      "platformLinks": {
+        "apple": null,
+        "netease": "https://music.163.com/#/song?id=1",
+        "qq": null,
+        "youtube": null,
+        "spotify": null
+      },
+      "sourceUrls": [
+        "https://music.163.com/#/song?id=1"
+      ],
+      "missingPlatformReasons": {
+        "apple": "结构测试数据，不宣称平台上架。",
+        "qq": "结构测试数据，不宣称平台上架。",
+        "youtube": "结构测试数据，不宣称平台上架。",
+        "spotify": "结构测试数据，不宣称平台上架。"
+      },
+      "lyrics": "这是自检生成的原创测试文本，不能当作真实歌曲歌词。",
+      "lyricsSource": {
+        "url": "https://example.org/test-lyrics"
+      },
+      "purpose": "合成数据验证字段，不得交付为节目。"
+    },
+    {
+      "songId": "S02",
+      "title": "合成测试歌曲2",
+      "artist": "测试作者",
+      "durationSeconds": 62,
+      "durationSource": "https://musicbrainz.org/recording/00000000-0000-0000-0000-000000000000",
+      "platformLinks": {
+        "apple": null,
+        "netease": "https://music.163.com/#/song?id=2",
+        "qq": null,
+        "youtube": null,
+        "spotify": null
+      },
+      "sourceUrls": [
+        "https://music.163.com/#/song?id=2"
+      ],
+      "missingPlatformReasons": {
+        "apple": "结构测试数据，不宣称平台上架。",
+        "qq": "结构测试数据，不宣称平台上架。",
+        "youtube": "结构测试数据，不宣称平台上架。",
+        "spotify": "结构测试数据，不宣称平台上架。"
+      },
+      "lyrics": "这是自检生成的原创测试文本，不能当作真实歌曲歌词。",
+      "lyricsSource": {
+        "url": "https://example.org/test-lyrics"
+      },
+      "purpose": "合成数据验证字段，不得交付为节目。"
+    },
+    {
+      "songId": "S03",
+      "title": "合成测试歌曲3",
+      "artist": "测试作者",
+      "durationSeconds": 63,
+      "durationSource": "https://musicbrainz.org/recording/00000000-0000-0000-0000-000000000000",
+      "platformLinks": {
+        "apple": null,
+        "netease": "https://music.163.com/#/song?id=3",
+        "qq": null,
+        "youtube": null,
+        "spotify": null
+      },
+      "sourceUrls": [
+        "https://music.163.com/#/song?id=3"
+      ],
+      "missingPlatformReasons": {
+        "apple": "结构测试数据，不宣称平台上架。",
+        "qq": "结构测试数据，不宣称平台上架。",
+        "youtube": "结构测试数据，不宣称平台上架。",
+        "spotify": "结构测试数据，不宣称平台上架。"
+      },
+      "lyrics": "这是自检生成的原创测试文本，不能当作真实歌曲歌词。",
+      "lyricsSource": {
+        "url": "https://example.org/test-lyrics"
+      },
+      "purpose": "收尾整曲（音乐收尾门禁样例），不得交付为节目。"
+    }
+  ],
+  "factPool": [
+    {
+      "id": "F01",
+      "text": "合成测试事实1，不得用于真实节目。",
+      "type": "事实",
+      "confidence": "单源可信",
+      "sourceUrls": [
+        "https://example.org/test-only"
+      ],
+      "note": "仅验证格式；不是已核实的真实来源。"
+    },
+    {
+      "id": "F02",
+      "text": "合成测试事实2，不得用于真实节目。",
+      "type": "事实",
+      "confidence": "单源可信",
+      "sourceUrls": [
+        "https://example.org/test-only"
+      ],
+      "note": "仅验证格式；不是已核实的真实来源。"
+    },
+    {
+      "id": "F03",
+      "text": "合成测试事实3（收尾留一手样例），不得用于真实节目。",
+      "type": "事实",
+      "confidence": "单源可信",
+      "sourceUrls": [
+        "https://example.org/test-only"
+      ],
+      "note": "仅验证格式；不是已核实的真实来源。"
+    }
+  ],
+  "status": "final",
+  "timeline": [
+    {
+      "blockId": "B1",
+      "type": "hook",
+      "narrativeFunction": "开场",
+      "emotionalTarget": "好奇",
+      "density": "sparse",
+      "contentDirections": [
+        "测试程序执行顺序；创作时替换为真实内容方向。"
+      ],
+      "items": [
+        {
+          "itemId": "P1",
+          "kind": "music",
+          "songId": "S01",
+          "mode": "full",
+          "start": {
+            "anchor": "timeline.start",
+            "offsetSeconds": 0
+          }
+        },
+        {
+          "itemId": "B1-a",
+          "kind": "voice",
+          "start": {
+            "anchor": "P1.end",
+            "offsetSeconds": 0.5
+          },
+          "text": "这里是一段测试台词。",
+          "factRefs": [
+            "F01"
+          ]
+        }
+      ]
+    },
+    {
+      "blockId": "B2",
+      "type": "narrative",
+      "narrativeFunction": "展开",
+      "emotionalTarget": "思考",
+      "density": "dense",
+      "contentDirections": [
+        "测试程序执行顺序；创作时替换为真实内容方向。"
+      ],
+      "items": [
+        {
+          "itemId": "B2-a",
+          "kind": "voice",
+          "start": {
+            "anchor": "B1-a.end",
+            "offsetSeconds": 1
+          },
+          "text": "字句之后，<#0.50#>再听一段回声。",
+          "factRefs": [
+            "F02"
+          ]
+        },
+        {
+          "itemId": "P2",
+          "kind": "music",
+          "songId": "S02",
+          "mode": "full",
+          "start": {
+            "anchor": "B2-a.end",
+            "offsetSeconds": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "blockId": "B3",
+      "type": "ending",
+      "narrativeFunction": "收尾：留一手 + 一句意象 + 降调 + 音乐接管",
+      "emotionalTarget": "释然",
+      "density": "sparse",
+      "contentDirections": [
+        "测试程序执行顺序；创作时替换为真实内容方向。"
+      ],
+      "items": [
+        {
+          "itemId": "B3-a",
+          "kind": "voice",
+          "start": {
+            "anchor": "P2.end",
+            "offsetSeconds": 1
+          },
+          "text": "压轴新料与一句意象收束。<#0.80#>本期现写的日常口吻收尾句。",
+          "factRefs": [
+            "F03"
+          ],
+          "notes": "F03 全篇首次出现（留一手，剧透控制）；收尾手法：留一手＋一句意象；形态：音乐接管，此后整曲播完即落幕"
+        },
+        {
+          "itemId": "P3",
+          "kind": "music",
+          "songId": "S03",
+          "mode": "full",
+          "start": {
+            "anchor": "B3-a.end",
+            "offsetSeconds": 1
+          }
+        }
+      ]
+    }
+  ]
+}

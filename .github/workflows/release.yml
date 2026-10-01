@@ -1,0 +1,177 @@
+name: Release Producer Skill
+
+on:
+  push:
+    tags:
+      - 'producer-v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: producer-skill-release
+  cancel-in-progress: false
+
+jobs:
+  validate-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify tag and skill version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="$(tr -d '\r\n' < skills/kaiseki-podcast-producer/VERSION)"
+          test "$RELEASE_TAG" = "producer-v$VERSION"
+          python3 - "$VERSION" <<'PY'
+          from pathlib import Path
+          import re, sys
+
+          version = sys.argv[1]
+          assert re.fullmatch(r'\d+\.\d+\.\d+', version), f'invalid semantic version: {version}'
+          skill = Path('skills/kaiseki-podcast-producer')
+          text = (skill / 'SKILL.md').read_text(encoding='utf-8')
+          assert f'version: {version}' in text, 'SKILL.md version metadata does not match VERSION'
+          PY
+      - name: Producer self-test
+        run: python3 skills/kaiseki-podcast-producer/scripts/self_test.py
+      - name: Build release assets
+        run: python3 scripts/build_producer_release.py --output-dir dist
+      - name: Verify release assets
+        run: |
+          test -s dist/kaiseki-podcast-producer-v$(tr -d '\r\n' < skills/kaiseki-podcast-producer/VERSION).zip
+          test -s dist/latest.json
+          test -s dist/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: producer-release-assets
+          path: dist/*
+          if-no-files-found: error
+
+  publish:
+    needs: validate-build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: producer-release-assets
+          path: dist
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${RELEASE_TAG#producer-v}"
+          ZIP="kaiseki-podcast-producer-v${VERSION}.zip"
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Reusing existing release $RELEASE_TAG"
+          else
+            gh release create "$RELEASE_TAG" \
+              --draft \
+              --title "怀石电台 Producer $RELEASE_TAG" \
+              --notes "怀石电台节目创作 Skill 发布。安装与更新说明见仓库 README。"
+          fi
+          ASSET_NAMES="$(gh release view "$RELEASE_TAG" --json assets --jq '.assets[].name')"
+          mkdir -p existing-release-assets
+          MISSING=()
+          for asset in "$ZIP" latest.json SHA256SUMS; do
+            if grep -Fxq "$asset" <<< "$ASSET_NAMES"; then
+              gh release download "$RELEASE_TAG" --pattern "$asset" --dir existing-release-assets
+              if [ "$asset" = "$ZIP" ]; then
+                BUILT_SHA="$(sha256sum "dist/$ZIP" | cut -d ' ' -f 1)"
+                PUBLISHED_SHA="$(sha256sum "existing-release-assets/$ZIP" | cut -d ' ' -f 1)"
+                if [ "$BUILT_SHA" != "$PUBLISHED_SHA" ]; then
+                  echo "Tag $RELEASE_TAG is immutable: published ZIP SHA-256 differs from this build. Publish a new version tag."
+                  exit 1
+                fi
+              fi
+              cp "existing-release-assets/$asset" "dist/$asset"
+            else
+              MISSING+=("dist/$asset")
+            fi
+          done
+          if ((${#MISSING[@]})); then
+            gh release upload "$RELEASE_TAG" "${MISSING[@]}"
+          fi
+          gh release edit "$RELEASE_TAG" --draft=false
+      - name: Confirm release assets before publishing latest metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release view "$RELEASE_TAG" --json assets > release-assets.json
+          VERSION="${RELEASE_TAG#producer-v}"
+          python3 - "$VERSION" <<'PY'
+          import json, sys
+          from pathlib import Path
+
+          version = sys.argv[1]
+          assets = {asset['name'] for asset in json.loads(Path('release-assets.json').read_text())['assets']}
+          expected = {
+              f'kaiseki-podcast-producer-v{version}.zip',
+              'latest.json',
+              'SHA256SUMS',
+          }
+          missing = expected - assets
+          if missing:
+              raise SystemExit(f'Release assets missing: {sorted(missing)}')
+          PY
+      - name: Update latest.json on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git switch --force-create main origin/main
+          cp dist/latest.json latest.json
+          python3 - "$RELEASE_TAG" <<'PY'
+          import json, re, sys
+          from pathlib import Path
+
+          tag = sys.argv[1]
+          candidate = json.loads(Path('latest.json').read_text(encoding='utf-8'))
+          candidate_version = candidate.get('version')
+          expected_version = tag.removeprefix('producer-v')
+          if candidate_version != expected_version:
+              raise SystemExit(f'latest.json version {candidate_version!r} does not match tag {expected_version!r}')
+
+          import subprocess
+          previous = subprocess.run(['git', 'show', 'HEAD:latest.json'], capture_output=True, text=True)
+          if previous.returncode == 0:
+              current = json.loads(previous.stdout)
+          else:
+              current = None
+
+          def parts(value):
+              if not isinstance(value, str) or not re.fullmatch(r'\d+\.\d+\.\d+', value):
+                  raise SystemExit(f'invalid semantic version in latest.json: {value!r}')
+              return tuple(map(int, value.split('.')))
+
+          if current and parts(candidate_version) < parts(current.get('version')):
+              print(f"Keeping newer main version {current['version']}; release {candidate_version} remains published")
+              if previous.returncode == 0:
+                  Path('latest.json').write_text(previous.stdout, encoding='utf-8')
+              else:
+                  Path('latest.json').unlink(missing_ok=True)
+              raise SystemExit(0)
+          PY
+          git add latest.json
+          if git diff --cached --quiet -- latest.json; then
+            echo "latest.json already points at this release"
+          else
+            git commit -m "chore: publish Producer ${RELEASE_TAG#producer-v} metadata"
+            git push origin main
+          fi
