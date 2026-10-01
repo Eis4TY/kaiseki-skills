@@ -1,5 +1,7 @@
 # 怀石电台 Skills
 
+<img src="skills/kaiseki-podcast-producer/assets/icon.png" alt="怀石电台 Producer Skill 图标" width="96" height="96" />
+
 本仓库发布怀石电台的节目创作 Skill。当前只提供 `kaiseki-podcast-producer`，用于调研主题、策划曲目、撰写口播，并生成可导入怀石电台的菜单包。
 
 ## 在 ChatGPT 网页端安装

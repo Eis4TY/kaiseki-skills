@@ -1,0 +1,5 @@
+interface:
+  display_name: "怀石电台 Producer"
+  short_description: "调研节目主题、编排音乐与撰写口播，生成可导入怀石电台的菜单包"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"

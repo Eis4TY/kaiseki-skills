@@ -2,7 +2,7 @@
 name: kaiseki-podcast-producer
 description: 怀石电台深度节目创作：联网调研、选曲与菜单设计、口播撰稿，生成自包含 sound-rules-v3 菜单 JSON 和可导入 ZIP。用于按主题制作音乐叙事节目或菜单包；不负责运行后端生产管线、合成 MP3 或自动上架。
 metadata:
-  version: 1.0.1
+  version: 1.0.2
 ---
 
 # 怀石电台节目制作
