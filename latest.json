@@ -1,10 +1,9 @@
 {
-  "version": "1.0.0",
-  "downloadUrl": "https://github.com/Eis4TY/kaiseki-skills/releases/download/producer-v1.0.0/kaiseki-podcast-producer-v1.0.0.zip",
-  "sha256": "bb8f46ab8c858d1f97b5515f65fa2b25773ed9091e410be9c85c3f08ed400c9c",
-  "publishedAt": "2026-10-01T04:15:06Z",
+  "version": "1.0.1",
+  "downloadUrl": "https://github.com/Eis4TY/kaiseki-skills/releases/download/producer-v1.0.1/kaiseki-podcast-producer-v1.0.1.zip",
+  "sha256": "a87a7f1d9f202d5094ae2ccd180c5675e40d78b63db781e22c0441b457846af2",
+  "publishedAt": "2026-10-01T04:39:10Z",
   "releaseNotes": [
-    "首个公开发行版。",
-    "增加每次创作启动时的版本检查与安全自动更新。"
+    "明确启动版本检查步骤，以及无法执行脚本时的检查与更新方式。"
   ]
 }
