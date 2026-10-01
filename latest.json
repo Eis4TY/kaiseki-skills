@@ -1,9 +1,9 @@
 {
-  "version": "1.0.1",
-  "downloadUrl": "https://github.com/Eis4TY/kaiseki-skills/releases/download/producer-v1.0.1/kaiseki-podcast-producer-v1.0.1.zip",
-  "sha256": "a87a7f1d9f202d5094ae2ccd180c5675e40d78b63db781e22c0441b457846af2",
-  "publishedAt": "2026-10-01T04:39:10Z",
+  "version": "1.0.2",
+  "downloadUrl": "https://github.com/Eis4TY/kaiseki-skills/releases/download/producer-v1.0.2/kaiseki-podcast-producer-v1.0.2.zip",
+  "sha256": "35b7b96a240115c8240bee260aadc48a1887e52e14db0122b2af5eed22321f62",
+  "publishedAt": "2026-10-01T04:54:22Z",
   "releaseNotes": [
-    "明确启动版本检查步骤，以及无法执行脚本时的检查与更新方式。"
+    "增加品牌图标与 Skill 界面元数据，图标随发布包分发。"
   ]
 }
