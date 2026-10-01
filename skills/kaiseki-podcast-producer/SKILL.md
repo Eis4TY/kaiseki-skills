@@ -2,12 +2,16 @@
 name: kaiseki-podcast-producer
 description: 怀石电台深度节目创作：联网调研、选曲与菜单设计、口播撰稿，生成自包含 sound-rules-v3 菜单 JSON 和可导入 ZIP。用于按主题制作音乐叙事节目或菜单包；不负责运行后端生产管线、合成 MP3 或自动上架。
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # 怀石电台节目制作
 
+## 启动检查
+
 每次开始新创作任务时，先运行 `python3 -X utf8 "<SKILL_DIR>/scripts/update_skill.py"` 检查并尝试更新。更新成功后重新读取本文件及相关 references，再开始创作；更新失败或离线时继续使用当前版本，并在最终交付中简短说明状态。网页端 ChatGPT 若只能写入本次会话沙盒，更新仅对当前会话副本生效，不要声称已永久安装或影响其他会话。
+
+无法执行脚本时，读取 `https://raw.githubusercontent.com/Eis4TY/kaiseki-skills/main/latest.json` 比较版本；发现新版则请求用户上传最新完整 ZIP。无法联网时明确说明未完成检查，不声称已更新。
 
 当前版本见 [VERSION](VERSION)，变更记录见 [CHANGELOG.md](CHANGELOG.md)。
 
